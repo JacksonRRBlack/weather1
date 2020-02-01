@@ -1,0 +1,219 @@
+﻿@font-face {
+    font-family: 'Oswald';
+    src: url('font/Oswald-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('font/Roboto-Regular.ttf');
+}
+
+.widget {
+    padding-top: 25px;
+    padding-left: 55px;
+    width: 365px;
+    height: 435px;
+    background-image: url(background.jpg);
+    font-family: 'Oswald', sans-serif;
+}
+
+.city {
+    height: 53px;
+    font-size: 42px;
+    padding: 15px 2px 0px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.temperature_weather {
+    width: 359px;
+    height: 180px;
+}
+
+.todayTemp {
+    float: left;
+    font-size: 90px;
+    text-align: right;
+    padding-top: 42px;
+    width: 138px;
+    height: 136px;
+}
+
+.celsius {
+    float: left;
+    padding-top: 82px;
+    width: 40px;
+    height: 96px;
+}
+
+.weather {
+    float: left;
+    padding-top: 10px;
+    width: 175px;
+    height: 158px;
+}
+
+.weather img {
+    width: 180px;
+    height: 180px;
+}
+
+.picture {
+    float: left;
+    width: 42px;
+    padding-top: 20px;
+    padding-left: 8px;
+    line-height: 30px;
+}
+
+.text_animation {
+    float: left;
+    width: 250px;
+    padding-top: 18px;
+    padding-left: 3px;
+    font-family: Arial;
+    line-height: 39px;
+    font-size: 34px;
+}
+
+.anim_setCity1 {
+    animation: setCity1 2s;
+}
+
+@keyframes setCity1 {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    25% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+.anim_setCity2 {
+    animation: setCity2 2s;
+}
+
+@keyframes setCity2 {
+    0% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+    75% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+}
+
+.anim_todayTemp1 {
+    animation: todayTemp1 2s;
+}
+
+@keyframes todayTemp1 {
+    0% {
+        opacity: 0;
+    }
+    25% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.anim_todayTemp2 {
+    animation: todayTemp2 2s;
+}
+
+@keyframes todayTemp2 {
+    0% {
+        opacity: 1;
+    }
+    75% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.anim_src1 {
+    animation: src1 2s;
+}
+
+@keyframes src1 {
+    0% {
+        opacity: 0;
+        transform: translate(-10px, -10px);
+    }
+    25% {
+        opacity: 1;
+        transform: translate(0px, 0px);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(0px, 0px);
+    }
+}
+
+.anim_src2 {
+    animation: src2 2s;
+}
+
+@keyframes src2 {
+    0% {
+        opacity: 1;
+    }
+    75% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.anim_text1 {
+    animation: text1 2s;
+}
+
+@keyframes text1 {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    25% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+.anim_text2 {
+    animation: text2 2s;
+}
+
+@keyframes text2 {
+    0% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+    75% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+}

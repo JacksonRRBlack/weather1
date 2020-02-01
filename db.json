@@ -1,0 +1,36 @@
+{
+  "title": {
+    "ru": "Погода тест",
+    "en": "Weather test"
+  },
+  "category_id": 3,
+  "params": [
+    {
+      "name": "coords",
+      "type": "multi-text",
+      "title": {
+        "ru": "Местоположение для погоды",
+        "en": "Weather location"
+      },
+      "default_value": {
+        "ru": [
+          "Введите координаты через запятую"
+        ],
+        "en": [
+          "Enter coordinates separated by commas"
+        ]
+      }
+    }
+  ],
+  "config": {
+    "sourceTypes": [],
+    "sourceEnabled": false,
+    "roomEnabled": false,
+    "floorEnabled": false,
+    "groupEnabled": false,
+    "minWidth":1,
+    "minHeight":1,
+    "optimalWidth":2,
+    "optimalHeight":2
+  }
+}

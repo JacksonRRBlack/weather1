@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Виджет погоды</title>
+</head>
+<body>
+<div class="widget">
+    <div class="city"></div>
+
+    <div class="temperature_weather">
+        <div class="todayTemp"></div>
+        <div class="celsius"><img src="celsius.svg" width="40" height="30"></div>
+        <div class="weather"></div>
+    </div>
+    <div class="picture"><img src="humidity.svg" width="32" height="32"><img src="wind.svg" width="32" height="32"><img
+            src="weather.svg" width="32" height="32"></div>
+    <div class="text_animation">
+        <div class="humidity"></div>
+        <div class="speed"></div>
+        <div class="pressure"></div>
+    </div>
+</div>
+
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>-->
+<script type="text/javascript" id="preloader_script">
+    function getURLParameter(name) {
+        return decodeURIComponent((new RegExp('[?|&]' + name + '=' +
+            '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1]) || null;
+    }
+    var publicPath = getURLParameter('public_path');
+    var filesArray = [
+        {type: 'script', src: publicPath + '/js/nativeLogger.js'},
+        {type: 'script', src: publicPath + '/js/jquery.min.js'},
+        {type: 'script', src: publicPath + '/js/helpers.js'},
+        {type: 'script', src: publicPath + '/js/nativeAppHelper.js'},
+        {type: 'script', src: publicPath + '/js/widgetHelpers.js'},
+        {type: 'script', src: 'index.js'},
+        {type: 'css', src: 'style.css'},
+    ];
+
+    function insertScripts() {
+        var documentFragment = document.createDocumentFragment();
+        filesArray.forEach(function(url) {
+            var element;
+            if (url['type'] === 'script') {
+                element = document.createElement('script');
+                element.type = 'text/javascript';
+                element.src = url['src'];
+                element.async = false;
+            } else if (url['type'] === 'css') {
+                element = document.createElement('link');
+                element.rel = 'stylesheet';
+                element.href = url['src'];
+            } else {
+                element = document.createElement('div');
+            }
+            documentFragment.appendChild(element);
+        });
+        document.querySelector('head').appendChild(documentFragment);
+    }
+
+    insertScripts()
+</script>
+</body>
+</html>
