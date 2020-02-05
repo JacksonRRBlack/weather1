@@ -21,23 +21,23 @@ $(document).ready(function () {
     widgetHelpers.sendWidgetIsPrepared();
 });
 
-function readCityList() {
-    var cityList = new XMLHttpRequest();
-    cityList.open('GET', 'city.list.json', false);
-    cityList.onreadystatechange = function () {
-        if (cityList.readyState === 4) {
-            if (cityList.status === 200 || cityList.status == 0) {
-                var allText = cityList.responseText;
-                parseCityList = JSON.parse(allText);
-                console.log(parseCityList[3].coord);
+// function readCityList() {
+//     var cityList = new XMLHttpRequest();
+//     cityList.open('GET', 'city.list.json', false);
+//     cityList.onreadystatechange = function () {
+//         if (cityList.readyState === 4) {
+//             if (cityList.status === 200 || cityList.status == 0) {
+//                 var allText = cityList.responseText;
+//                 parseCityList = JSON.parse(allText);
+//                 console.log(parseCityList[3].coord);
+//
+//             }
+//         }
+//     }
+//     cityList.send();
+// }
 
-            }
-        }
-    }
-    cityList.send();
-}
-
-readCityList('city.list.json');
+// readCityList('city.list.json');
 
 function updateParams(params, apiKeys) {
     console.log(params);
@@ -49,30 +49,33 @@ function updateParams(params, apiKeys) {
 
 function getWeather(ap,par) {
     console.log(api);
-    console.log(parseCityList);
+    // console.log(parseCityList);
     console.log(coords);
 
     function writeIdCity() {
         for (var k = 0; k < coords.length; k++) {
             var splitCoords = coords[k].split(',', 2);
-            for (var l = 0; l < parseCityList.length; l++) {
-                if (+splitCoords[0] === parseCityList[l].coord.lon && +splitCoords[1] === parseCityList[l].coord.lat) {
-                    idCity[k] = parseCityList[l].id;
-                    city[k] = parseCityList[l].name;
-                } else {
-                    l++;
-                }
-            }
+            var lat[k] = +splitCoords[0];
+            var lon[k] = +splitCoords[1];
+            // for (var l = 0; l < parseCityList.length; l++) {
+            //     if (+splitCoords[0] === parseCityList[l].coord.lon && +splitCoords[1] === parseCityList[l].coord.lat) {
+            //         idCity[k] = parseCityList[l].id;
+            //         city[k] = parseCityList[l].name;
+            //     } else {
+            //         l++;
+            //     }
+            // }
         }
     }
 
     writeIdCity();
-    console.log(idCity);
+    // console.log(idCity);
 
     jQuery(document).ready(function ($) {
 
         $.ajax({
             url: 'https://api.openweathermap.org/data/2.5/group?id=' + idCity + '&APPID=' + api + '&units=metric&cnt=10',
+            // url: 'https://api.openweathermap.org/data/2.5/weather?lat=' +lat[i] + '&lon=' + lon[i] + '&APPID=' + api + '&units=metric',
             dataType: 'json',
             success: function (data) {
                 for (var j = 0; j < city.length; j++) {
