@@ -25,7 +25,10 @@ function updateParams(params, apiKeys) {
     console.log(params);
     api = apiKeys.openweathermap;
     coords = params.coords;
+    lat = [];
+    lon = [];
     getWeather(api, coords);
+
 }
 
 function getWeather(ap, par) {
@@ -34,20 +37,29 @@ function getWeather(ap, par) {
     function writeCoordsCity() {
         for (var k = 0; k < coords.length; k++) {
             var splitCoords = coords[k].split(',', 2);
-            lat[k] = +splitCoords[0];
-            lon[k] = +splitCoords[1];
+            if (splitCoords[0] >= -90 && splitCoords[0] <= 90 && splitCoords[1] >= -180 && splitCoords[1] <= 180) {
+            lat.push(+splitCoords[0]);
+            lon.push(+splitCoords[1]);
+            }
         }
     }
 
     writeCoordsCity();
-
+console.log(lat, lon);
     jQuery(document).ready(function ($) {
+        city = [];
+        temp = [];
+        humidity = [];
+        speed = [];
+        pressure = [];
+        description = [];
         for (var l = 0; l < lat.length; l++) {
             $.ajax({
                 url: 'https://api.openweathermap.org/data/2.5/weather?lat=' + lat[l] + '&lon=' + lon[l] + '&APPID=' + api + '&units=metric',
                 dataType: 'json',
                 success: function (data) {
                     console.log(data);
+
                     if (Math.round(data.main.temp) > 0) {
                         temp.push('+' + Math.round(data.main.temp));
                     } else {
