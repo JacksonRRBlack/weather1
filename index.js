@@ -11,6 +11,18 @@ var lon = [];
 var api;
 
 
+var todayTemp = document.querySelector('.todayTemp');
+var setCity = document.querySelector('.city');
+var setHumidity = document.querySelector('.humidity');
+var setSpeed = document.querySelector('.speed');
+var setPressure = document.querySelector('.pressure');
+var textAnimation = document.querySelector('.text_animation');
+var celsius = document.querySelector('.celsius');
+var img = document.createElement("img");
+var src = document.querySelector('.weather');
+var i = 0;
+
+
 // document.addEventListener("DOMContentLoaded", function () {
 //     widgetHelpers.startMessagingClient(true);
 //     widgetHelpers.sendWidgetIsPrepared();
@@ -19,6 +31,7 @@ var api;
 $(document).ready(function () {
     widgetHelpers.startMessagingClient(true);
     widgetHelpers.sendWidgetIsPrepared();
+    widgetHelpers.sendWidgetIsReady();
 });
 
 function updateParams(params, apiKeys) {
@@ -45,9 +58,12 @@ function getWeather(ap, par) {
     }
 
     writeCoordsCity();
-console.log(lat, lon);
+    console.log(lat, lon);
     jQuery(document).ready(function ($) {
+        document.querySelector('.stub').style.display = "block";
+        document.querySelector('.widget').style.display = "none";
         city = [];
+        setTimeout(function updateWeather () {
         temp = [];
         humidity = [];
         speed = [];
@@ -72,20 +88,13 @@ console.log(lat, lon);
                     city.push(data.name);
                     console.log(temp);
                 }
+
             });
-        }
+            setTimeout(updateWeather, 1000*60*60);
+        } }, 0);
     });
 }
-var todayTemp = document.querySelector('.todayTemp');
-var setCity = document.querySelector('.city');
-var setHumidity = document.querySelector('.humidity');
-var setSpeed = document.querySelector('.speed');
-var setPressure = document.querySelector('.pressure');
-var textAnimation = document.querySelector('.text_animation');
-var celsius = document.querySelector('.celsius');
-var img = document.createElement("img");
-var src = document.querySelector('.weather');
-var i = 0;
+
 
 function setAll() {
     todayTemp.classList.remove("anim_todayTemp2");
@@ -138,10 +147,13 @@ function setAll() {
         i = 0;
     }
     timer = setTimeout(setAll, 4000);
+    if (temp.length != 0) {
+        document.querySelector('.stub').style.display = "none";
+        document.querySelector('.widget').style.display = "block";
+        widgetHelpers.sendWidgetIsReady();
+    }
 };
 setAll();
-
-
 
 // function readCityList() {
 //     var cityList = new XMLHttpRequest();

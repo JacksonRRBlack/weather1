@@ -8,7 +8,14 @@
     src: url('font/Roboto-Regular.ttf');
 }
 
+.stub {
+    display: block;
+    width: 420px;
+    height: 460px;
+}
+
 .widget {
+    display: none;
     padding-top: 25px;
     padding-left: 55px;
     width: 365px;
