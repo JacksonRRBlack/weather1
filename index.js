@@ -61,8 +61,8 @@ function getWeather(ap, par) {
     jQuery(document).ready(function ($) {
         document.querySelector('.stub').style.display = "block";
         document.querySelector('.widget').style.display = "none";
-        city = [];
         setTimeout(function updateWeather () {
+        city = [];
         temp = [];
         humidity = [];
         speed = [];
