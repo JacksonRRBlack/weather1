@@ -31,7 +31,6 @@ var i = 0;
 $(document).ready(function () {
     widgetHelpers.startMessagingClient(true);
     widgetHelpers.sendWidgetIsPrepared();
-    widgetHelpers.sendWidgetIsReady();
 });
 
 function updateParams(params, apiKeys) {
