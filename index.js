@@ -21,7 +21,7 @@ var celsius = document.querySelector('.celsius');
 var img = document.createElement("img");
 var src = document.querySelector('.weather');
 var i = 0;
-
+var timerUpdateWeather;
 
 // document.addEventListener("DOMContentLoaded", function () {
 //     widgetHelpers.startMessagingClient(true);
@@ -39,58 +39,71 @@ function updateParams(params, apiKeys) {
     coords = params.coords;
     lat = [];
     lon = [];
-    getWeather(api, coords);
-
+    transferWeather(api, coords);
 }
 
-function getWeather(ap, par) {
-    console.log(coords);
-
-    function writeCoordsCity() {
-        for (var k = 0; k < coords.length; k++) {
-            var splitCoords = coords[k].split(',', 2);
-            if (splitCoords[0] >= -90 && splitCoords[0] <= 90 && splitCoords[1] >= -180 && splitCoords[1] <= 180) {
+function writeCoordsCity(coords) {
+    for (var k = 0; k < coords.length; k++) {
+        var splitCoords = coords[k].split(',', 2);
+        if (splitCoords[0] >= -90 && splitCoords[0] <= 90 && splitCoords[1] >= -180 && splitCoords[1] <= 180) {
             lat.push(+splitCoords[0]);
             lon.push(+splitCoords[1]);
-            }
         }
     }
+}
 
-    writeCoordsCity();
+function showStub() {
+    document.querySelector('.stub').style.display = "block";
+    document.querySelector('.widget').style.display = "none";
+}
+
+function hideStub() {
+    document.querySelector('.stub').style.display = "none";
+    document.querySelector('.widget').style.display = "block";
+}
+
+function getWeather() {
+    for (var l = 0; l < lat.length; l++) {
+        $.ajax({
+            url: 'https://api.openweathermap.org/data/2.5/weather?lat=' + lat[l] + '&lon=' + lon[l] + '&APPID=' + api + '&units=metric',
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+
+                if (Math.round(data.main.temp) > 0) {
+                    temp.push('+' + Math.round(data.main.temp));
+                } else {
+                    temp.push(Math.round(data.main.temp));
+                }
+                humidity.push(data.main.humidity);
+                speed.push(data.wind.speed);
+                pressure.push(data.main.pressure);
+                description.push(data.weather[0].main);
+                city.push(data.name);
+                console.log(temp);
+            }
+        });
+    }
+}
+
+function transferWeather(api, coords) {
+    console.log(coords);
+
+    writeCoordsCity(coords);
     console.log(lat, lon);
+
     jQuery(document).ready(function ($) {
-        document.querySelector('.stub').style.display = "block";
-        document.querySelector('.widget').style.display = "none";
         city = [];
-        setTimeout(function updateWeather () {
         temp = [];
         humidity = [];
         speed = [];
         pressure = [];
         description = [];
-        for (var l = 0; l < lat.length; l++) {
-            $.ajax({
-                url: 'https://api.openweathermap.org/data/2.5/weather?lat=' + lat[l] + '&lon=' + lon[l] + '&APPID=' + api + '&units=metric',
-                dataType: 'json',
-                success: function (data) {
-                    console.log(data);
-
-                    if (Math.round(data.main.temp) > 0) {
-                        temp.push('+' + Math.round(data.main.temp));
-                    } else {
-                        temp.push(Math.round(data.main.temp));
-                    }
-                    humidity.push(data.main.humidity);
-                    speed.push(data.wind.speed);
-                    pressure.push(data.main.pressure);
-                    description.push(data.weather[0].main);
-                    city.push(data.name);
-                    console.log(temp);
-                }
-
-            });
-            setTimeout(updateWeather, 1000*60*60);
-        } }, 0);
+        clearTimeout(timerUpdateWeather);
+        timerUpdateWeather = setTimeout(function updateWeather() {
+            getWeather();
+            setTimeout(updateWeather, 1000 * 60 * 60);
+        }, 0);
     });
 }
 
@@ -147,11 +160,11 @@ function setAll() {
     }
     timer = setTimeout(setAll, 4000);
     if (temp.length != 0) {
-        document.querySelector('.stub').style.display = "none";
-        document.querySelector('.widget').style.display = "block";
+        hideStub();
         widgetHelpers.sendWidgetIsReady();
     }
 };
+showStub();
 setAll();
 
 // function readCityList() {
