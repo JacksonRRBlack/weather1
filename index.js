@@ -124,7 +124,9 @@ function transferWeather(api, coords) {
     console.log(lat, lon);
 
     jQuery(document).ready(function ($) {
-        clearTimeout(timerUpdateWeather);
+        if (timerUpdateWeather) {
+            clearTimeout(timerUpdateWeather);
+        }
         timerUpdateWeather = setTimeout(function updateWeather() {
             getWeather();
             timerUpdateWeather = setTimeout(updateWeather, 1000 * 60 * 60);
