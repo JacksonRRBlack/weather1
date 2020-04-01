@@ -5,6 +5,13 @@ var speed = [];
 var pressure = [];
 var description = [];
 
+var city1 = [];
+var temp1 = [];
+var humidity1 = [];
+var speed1 = [];
+var pressure1 = [];
+var description1 = [];
+
 var coords = [];
 var lat = [];
 var lon = [];
@@ -23,6 +30,8 @@ var src = document.querySelector('.weather');
 var i = 0;
 var timerUpdateWeather;
 
+var promiseResponseReceived;
+
 // document.addEventListener("DOMContentLoaded", function () {
 //     widgetHelpers.startMessagingClient(true);
 //     widgetHelpers.sendWidgetIsPrepared();
@@ -35,6 +44,7 @@ $(document).ready(function () {
 
 function updateParams(params, apiKeys) {
     console.log(params);
+    console.log(apiKeys);
     api = apiKeys.openweathermap;
     coords = params.coords;
     lat = [];
@@ -63,27 +73,48 @@ function hideStub() {
 }
 
 function getWeather() {
-    for (var l = 0; l < lat.length; l++) {
-        $.ajax({
-            url: 'https://api.openweathermap.org/data/2.5/weather?lat=' + lat[l] + '&lon=' + lon[l] + '&APPID=' + api + '&units=metric',
-            dataType: 'json',
-            success: function (data) {
-                console.log(data);
+    city1 = [];
+    temp1 = [];
+    humidity1 = [];
+    speed1 = [];
+    pressure1 = [];
+    description1 = [];
+    promiseResponseReceived = new Promise(function (resolve, reject) {
+        for (var l = 0; l < lat.length; l++) {
+            $.ajax({
+                url: 'https://api.openweathermap.org/data/2.5/weather?lat=' + lat[l] + '&lon=' + lon[l] + '&APPID=' + api + '&units=metric',
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
 
-                if (Math.round(data.main.temp) > 0) {
-                    temp.push('+' + Math.round(data.main.temp));
-                } else {
-                    temp.push(Math.round(data.main.temp));
+                    var roundTemp = Math.round(data.main.temp);
+                    if (roundTemp > 0) {
+                        temp1.push('+' + roundTemp);
+                    } else {
+                        temp1.push(roundTemp);
+                    }
+                    humidity1.push(data.main.humidity);
+                    speed1.push(data.wind.speed);
+                    pressure1.push(data.main.pressure);
+                    description1.push(data.weather[0].main);
+                    city1.push(data.name);
+                    console.log(temp1);
+                    if (temp1.length === lat.length) {
+                        resolve();
+                    }
                 }
-                humidity.push(data.main.humidity);
-                speed.push(data.wind.speed);
-                pressure.push(data.main.pressure);
-                description.push(data.weather[0].main);
-                city.push(data.name);
-                console.log(temp);
-            }
-        });
-    }
+            });
+        }
+    });
+    promiseResponseReceived.then(function () {
+        city = city1;
+        temp = temp1;
+        humidity = humidity1;
+        speed = speed1;
+        pressure = pressure1;
+        description = description1;
+    });
+
 }
 
 function transferWeather(api, coords) {
@@ -93,16 +124,10 @@ function transferWeather(api, coords) {
     console.log(lat, lon);
 
     jQuery(document).ready(function ($) {
-        city = [];
-        temp = [];
-        humidity = [];
-        speed = [];
-        pressure = [];
-        description = [];
         clearTimeout(timerUpdateWeather);
         timerUpdateWeather = setTimeout(function updateWeather() {
             getWeather();
-            setTimeout(updateWeather, 1000 * 60 * 60);
+            timerUpdateWeather = setTimeout(updateWeather, 1000 * 60 * 60);
         }, 0);
     });
 }
@@ -159,7 +184,7 @@ function setAll() {
         i = 0;
     }
     timer = setTimeout(setAll, 4000);
-    if (temp.length != 0) {
+    if (temp.length) {
         hideStub();
         widgetHelpers.sendWidgetIsReady();
     }
