@@ -29,6 +29,7 @@ var img = document.createElement("img");
 var src = document.querySelector('.weather');
 var i = 0;
 var timerUpdateWeather;
+var timeoutUpdateWeather;
 
 var promiseResponseReceived;
 
@@ -102,7 +103,10 @@ function getWeather() {
                     if (temp1.length === lat.length) {
                         resolve();
                     }
-                }
+                },
+                error: function (data) {
+                    timeoutUpdateWeather = 1000 * 60;
+                },
             });
         }
     });
@@ -113,6 +117,7 @@ function getWeather() {
         speed = speed1;
         pressure = pressure1;
         description = description1;
+        timeoutUpdateWeather = 1000 * 60 * 60;
     });
 
 }
@@ -128,8 +133,9 @@ function transferWeather(api, coords) {
             clearTimeout(timerUpdateWeather);
         }
         timerUpdateWeather = setTimeout(function updateWeather() {
+            timeoutUpdateWeather = 1000 * 60 * 60;
             getWeather();
-            timerUpdateWeather = setTimeout(updateWeather, 1000 * 60 * 60);
+            timerUpdateWeather = setTimeout(updateWeather, timeoutUpdateWeather);
         }, 0);
     });
 }
