@@ -105,21 +105,24 @@ function getWeather() {
                     }
                 },
                 error: function (data) {
-                    timeoutUpdateWeather = 1000 * 60;
+                    reject();
                 },
             });
         }
     });
-    promiseResponseReceived.then(function () {
-        city = city1;
-        temp = temp1;
-        humidity = humidity1;
-        speed = speed1;
-        pressure = pressure1;
-        description = description1;
-        timeoutUpdateWeather = 1000 * 60 * 60;
-    });
-
+    promiseResponseReceived.then(
+        function () {
+            city = city1;
+            temp = temp1;
+            humidity = humidity1;
+            speed = speed1;
+            pressure = pressure1;
+            description = description1;
+            timeoutUpdateWeather = 1000 * 60 * 60;
+        },
+        function () {
+            timeoutUpdateWeather = 1000 * 60;
+        });
 }
 
 function transferWeather(api, coords) {
@@ -133,7 +136,6 @@ function transferWeather(api, coords) {
             clearTimeout(timerUpdateWeather);
         }
         timerUpdateWeather = setTimeout(function updateWeather() {
-            timeoutUpdateWeather = 1000 * 60 * 60;
             getWeather();
             timerUpdateWeather = setTimeout(updateWeather, timeoutUpdateWeather);
         }, 0);
